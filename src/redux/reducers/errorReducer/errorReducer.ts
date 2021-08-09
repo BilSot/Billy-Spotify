@@ -1,15 +1,15 @@
 import {Reducer} from "redux";
-import {ErrorAction, ErrorState} from "../../../types/models";
+import {ErrorAction, ErrorModel} from "../../../types/models";
 import {SET_ERROR, RESET_ERROR} from "./errorActions";
 
-const initialState: ErrorState = {
+const initialState: ErrorModel = {
     errorResponse: {
         message: "",
         status: ""
     }
 };
 
-export const errorReducer: Reducer<ErrorState, ErrorAction> = function (state: ErrorState = initialState, action: ErrorAction): ErrorState {
+export const errorReducer: Reducer<ErrorModel, ErrorAction> = function (state: ErrorModel = initialState, action: ErrorAction): ErrorModel {
     switch(action.type) {
         case SET_ERROR:
         case RESET_ERROR: {

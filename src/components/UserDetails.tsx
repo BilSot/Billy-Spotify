@@ -1,8 +1,8 @@
 import React from "react";
-import {UserDetailsState} from "../types/models";
+import {UserDetailsModel} from "../types/models";
 
 interface UserDetailsProps {
-    loggedInUser: UserDetailsState
+    loggedInUser: UserDetailsModel
 }
 
 const UserDetails: React.FC<UserDetailsProps> = ({loggedInUser}) => {

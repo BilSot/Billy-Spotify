@@ -6,9 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import {createStore, Store} from "redux";
 import {Provider} from "react-redux";
 import {rootReducer} from "./redux/rootReducer";
-import {SpotlifyState} from "./types/models";
+import {BillySpotifyStateModel} from "./types/models";
 
-const spotiflyStore: Store<SpotlifyState> = createStore(rootReducer);
+const spotiflyStore: Store<BillySpotifyStateModel> = createStore(rootReducer);
 
 ReactDOM.render(
     <React.StrictMode>

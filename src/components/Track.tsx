@@ -1,9 +1,15 @@
 import React from "react";
+import {TrackModel} from "../types/models";
 
-const Track = () => {
+interface TrackProps {
+    track: TrackModel
+}
+const Track: React.FC<TrackProps> = ({track}) => {
     return (
         <div>
-            <p>Track's content</p>
+            <p>{track.name}</p>
+            <p>{track.album}</p>
+            <img src={track.image} />
         </div>
     )
 }

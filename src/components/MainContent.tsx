@@ -1,11 +1,17 @@
 import React from "react";
 import PlaylistDropdown from "./PlaylistDropdown";
+import {PlaylistModel} from "../types/models";
 
-const MainContent = () => {
+interface MainContentProps {
+    playlists: PlaylistModel[],
+    fetchTracksFromPlaylist: (playlistId: string) => void
+}
+
+const MainContent: React.FC<MainContentProps> = ({playlists, fetchTracksFromPlaylist}) => {
     return (
         <div>
             <p>Main content</p>
-            <PlaylistDropdown />
+            <PlaylistDropdown playlists={playlists} fetchTracksFromPlaylist={fetchTracksFromPlaylist}/>
         </div>
     )
 }

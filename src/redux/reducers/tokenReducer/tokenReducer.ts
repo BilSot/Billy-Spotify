@@ -1,11 +1,11 @@
-import {TokenAction, TokenState} from "../../../types/models";
+import {TokenAction, TokenModel} from "../../../types/models";
 import {SET_TOKEN} from "./tokenActions";
 import {Reducer} from "redux";
 
-const initialState: TokenState = {
+const initialState: TokenModel = {
     token: ""
 };
-export const tokenReducer: Reducer<TokenState, TokenAction> = function (state: TokenState = initialState, action: TokenAction): TokenState{
+export const tokenReducer: Reducer<TokenModel, TokenAction> = function (state: TokenModel = initialState, action: TokenAction): TokenModel{
     switch(action.type) {
         case SET_TOKEN:
         {

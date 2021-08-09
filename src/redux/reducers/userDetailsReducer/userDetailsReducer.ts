@@ -1,15 +1,15 @@
 import {Reducer} from "redux";
-import {UserAction, UserDetailsState} from "../../../types/models";
+import {UserAction, UserDetailsModel} from "../../../types/models";
 import {FETCH_USER_ERROR, FETCH_USER_SUCCESS} from "./userDetailsActions";
 
-const initialState: UserDetailsState = {
+const initialState: UserDetailsModel = {
     id: "",
     display_name: "",
     image: "",
     loaded: false
 }
 
-export const userDetailsReducer: Reducer<UserDetailsState, UserAction> = function (state: UserDetailsState = initialState, action: UserAction): UserDetailsState {
+export const userDetailsReducer: Reducer<UserDetailsModel, UserAction> = function (state: UserDetailsModel = initialState, action: UserAction): UserDetailsModel {
     switch (action.type) {
         case FETCH_USER_SUCCESS:
         {
