@@ -4,7 +4,7 @@ import React, {useEffect} from "react";
 import {
     HashParam,
     BillySpotifyStateModel,
-    UserDetailsModel, PlaylistModel, TrackModel
+    UserDetailsModel, PlaylistModel, TrackModel, DraftPlaylist
 } from "./types/models";
 import {bindActionCreators} from "redux";
 import {connect, ConnectedProps} from "react-redux";
@@ -13,7 +13,12 @@ import Header from "./components/Header";
 import MainContent from "./components/MainContent";
 import {fetchUserError, fetchUserSuccess} from "./redux/reducers/userDetailsReducer/userDetailsActions";
 import axios from "axios";
-import {fetchAllPlaylists} from "./redux/reducers/playlistReducer/playlistActions";
+import {
+    createPlaylist,
+    fetchAllPlaylists,
+    setSelectedPlaylist,
+    setTracksInPlaylist
+} from "./redux/reducers/playlistReducer/playlistActions";
 import {setTracks} from "./redux/reducers/trackReducer/trackActions";
 
 const App: React.FC<PropsFromRedux> = (props) => {
@@ -28,12 +33,12 @@ const App: React.FC<PropsFromRedux> = (props) => {
     onLoad();
 
     useEffect(() => {
-        if(props.token !== "") {
+        if (props.token !== "") {
             fetchUser();
         }
     }, [props.token]);
 
-    function onLoad () {
+    function onLoad() {
         hash = getHashFromURL();
         if (hash.access_token) {
             props.setToken(hash.access_token);
@@ -42,7 +47,7 @@ const App: React.FC<PropsFromRedux> = (props) => {
         }
     }
 
-    function getHashFromURL (): SpotifyToken {
+    function getHashFromURL(): SpotifyToken {
         let hashParams = window.location.hash
             .substring(1)
             .split("&")
@@ -62,7 +67,7 @@ const App: React.FC<PropsFromRedux> = (props) => {
         }
     }
 
-    function fetchUser (): void {
+    function fetchUser(): void {
         axios.get("https://api.spotify.com/v1/me", {
             headers: {'Authorization': 'Bearer ' + props.token}
         })
@@ -81,48 +86,70 @@ const App: React.FC<PropsFromRedux> = (props) => {
             })
     }
 
-    function fetchUserPlaylists (): void {
+    function fetchUserPlaylists(): void {
         axios.get("https://api.spotify.com/v1/me/playlists", {
             headers: {'Authorization': 'Bearer ' + props.token}
         })
             .then((data) => {
                 let playlists: PlaylistModel[] = [];
-                for (let item in data.data.items){
-                    playlists.push(data.data.items[item]);
+                for (let item in data.data.items) {
+                    playlists.push({
+                        ...data.data.items[item],
+                        tracks: []
+                    });
                 }
                 props.fetchAllPlaylists(playlists);
             })
             .catch((error) => {
-
+                console.log(error);
             })
     }
 
-    function fetchTracksFromPlaylist (playlistId: string): void {
-        if(playlistId !== "") {
-            axios.get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-                headers: {'Authorization': 'Bearer ' + props.token}
+    function createNewPlaylist(playlist: DraftPlaylist): void {
+        axios.post(`https://api.spotify.com/v1/users/${props.user.id}/playlists`, playlist, {
+                headers: {
+                    'Authorization': 'Bearer ' + props.token,
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
+            .then((response) => {
+                console.log(response);
+                let newlyCreatedPlaylist: PlaylistModel = {
+                    id: response.data.id,
+                    name: response.data.name,
+                    description: response.data.description,
+                    tracks: []
+                }
+                props.createPlaylist(newlyCreatedPlaylist);
             })
-                .then((data) => {
-                    let tracksPerPlaylist: TrackModel[] = [];
-                    for (let item in data.data.items) {
-                        tracksPerPlaylist.push({
-                            id: data.data.items[item].track.id,
-                            name: data.data.items[item].track.name,
-                            uri: data.data.items[item].track.uri,
-                            album: data.data.items[item].track.album.name,
-                            artist: data.data.items[item].track.artists,
-                            image: data.data.items[item].track.album.images[2].url,
-                            duration: data.data.items[item].track.duration_ms
-                        });
-                    }
-                    props.setTracks(tracksPerPlaylist);
-                })
-                .catch((error) => {
+            .catch((error) => console.log(error));
+    }
 
-                })
-        }else{
-            props.setTracks([]);
-        }
+    function fetchTracksFromPlaylist(playlistId: string): void {
+
+        axios.get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+            headers: {'Authorization': 'Bearer ' + props.token}
+        })
+            .then((data) => {
+                let tracksInPlaylist: TrackModel[] = [];
+                for (let item in data.data.items) {
+                    tracksInPlaylist.push({
+                        id: data.data.items[item].track.id,
+                        name: data.data.items[item].track.name,
+                        uri: data.data.items[item].track.uri,
+                        album: data.data.items[item].track.album.name,
+                        artists: data.data.items[item].track.artists,
+                        image: data.data.items[item].track.album.images[2].url,
+                        duration: data.data.items[item].track.duration_ms
+                    });
+                }
+                props.setTracks(tracksInPlaylist);
+                props.setTracksInPlaylist(tracksInPlaylist, playlistId);
+            })
+            .catch((error) => {
+
+            })
     }
 
 
@@ -133,7 +160,7 @@ const App: React.FC<PropsFromRedux> = (props) => {
             )}
             {props.token && (
                 <div>
-                    <Header loggedInUser={props.user}/>
+                    <Header loggedInUser={props.user} createNewPlaylist={createNewPlaylist}/>
                     <MainContent playlists={props.playlists} fetchTracksFromPlaylist={fetchTracksFromPlaylist}/>
                 </div>
             )}
@@ -157,7 +184,10 @@ const mapDispatchToProps = (dispatch: any) => {
             fetchUserSuccess,
             fetchUserError,
             fetchAllPlaylists,
-            setTracks
+            setTracksInPlaylist,
+            setTracks,
+            createPlaylist,
+            setSelectedPlaylist
         },
         dispatch
     );

@@ -3,6 +3,10 @@ body{
   color: white;
 }
 
+.modal-content {
+  color: black;
+}
+
 .App {
   text-align: center;
 }

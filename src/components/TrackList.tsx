@@ -9,7 +9,7 @@ interface TrackListProps {
 const TrackList: React.FC<TrackListProps> = ({tracks}) => {
     return (
         <div>
-            {tracks.map((track) => {
+            {tracks && tracks.map((track) => {
                 return <Track key={track.id} track={track}/>
             })}
         </div>
