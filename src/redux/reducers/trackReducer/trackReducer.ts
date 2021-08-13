@@ -1,6 +1,6 @@
 import {Reducer} from "redux";
 import {TrackAction, TrackListModel} from "../../../types/models";
-import {FETCH_ALL_TRACKS} from "./trackActions";
+import {ADD_TRACK, FETCH_ALL_TRACKS, REMOVE_TRACK} from "./trackActions";
 
 const initialState: TrackListModel = {
     tracks: []
@@ -12,6 +12,18 @@ export const trackReducer: Reducer<TrackListModel, TrackAction> = (state: TrackL
             return {
                 ...state,
                 tracks: action.tracks
+            }
+        }
+        case ADD_TRACK: {
+            return {
+                ...state,
+                tracks: state.tracks.concat(action.track)
+            }
+        }
+        case REMOVE_TRACK: {
+            return {
+                ...state,
+                tracks: state.tracks.filter((t) => t.id !== action.track.id)
             }
         }
     }

@@ -1,12 +1,19 @@
-body{
-  background-color: #282c34;
-  color: white;
-}
-
 .modal-content {
   color: black;
 }
 
+.modal-open {
+  overflow-y: scroll!important;
+  overflow-x: hidden!important;
+  padding-right: 0!important;
+}
+
+.button-dark{
+  background-color: wheat;
+}
+.button-light{
+  background-color: red;
+}
 .App {
   text-align: center;
 }

@@ -1,12 +1,17 @@
-import React from "react";
-import {SearchResult} from "../types/models";
+import React, {useState} from "react";
+import {SearchResult, TrackModel} from "../types/models";
 
 interface SearchResultsListProps {
     searchResults: SearchResult[],
-    addTrackToPlaylist: (trackUri: string) => void
+    addTrackToPlaylist: (track: SearchResult) => void
 }
 const SearchResultsList: React.FC<SearchResultsListProps> = ({searchResults, addTrackToPlaylist}) => {
-
+    const [updateUI, triggerUpdate] = useState(false);
+    const onTrackAddedClick = (track: SearchResult): void => {
+        track.addedInPlaylist = true;
+        triggerUpdate(!updateUI);
+        addTrackToPlaylist(track);
+    }
     return (
         <div>
             <ul>
@@ -15,7 +20,7 @@ const SearchResultsList: React.FC<SearchResultsListProps> = ({searchResults, add
                     <img src={track.image} alt="track's image" />
                     <span>{track.name}</span>
                     {track.addedInPlaylist && <span>Added</span>}
-                    {!track.addedInPlaylist && <button onClick={() => addTrackToPlaylist(track.uri)}>Add track</button>}
+                    {!track.addedInPlaylist && <button onClick={() => onTrackAddedClick(track)}>Add track</button>}
                 </li>
             })}
             </ul>

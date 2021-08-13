@@ -1,14 +1,18 @@
 import {Action} from "redux";
-import {FETCH_ALL_PLAYLIST} from "../redux/reducers/playlistReducer/playlistActions";
 
 export type HashParam = {[key: string]: string};
 
 export interface BillySpotifyStateModel {
+    themeState: ThemeModel;
     tokenState: TokenModel;
     errorState: ErrorModel;
     user: UserDetailsModel;
     playlistsData: Playlists;
     trackList: TrackListModel;
+}
+
+export interface ThemeModel {
+    theme: string;
 }
 
 export interface TokenModel {
@@ -31,9 +35,11 @@ export interface UserDetailsModel {
     loaded: boolean;
 }
 
+export type ActivePlaylist = {playlistId: string, playlist: PlaylistModel}
+
 export interface Playlists {
     playlists: PlaylistModel[];
-    activePlaylist: string;
+    activePlaylist: ActivePlaylist;
 }
 
 export interface PlaylistModel {
@@ -42,6 +48,13 @@ export interface PlaylistModel {
     description: string;
     image?: string;
     tracks: TrackModel[];
+}
+
+export const defaultPlaylist: PlaylistModel = {
+    name: "",
+    id: "",
+    description: "",
+    tracks: []
 }
 
 export interface TrackListModel {
@@ -77,15 +90,19 @@ export interface SearchResult {
     addedInPlaylist: boolean;
 }
 
+export type ThemeAction = {type: string; theme: string}
 export type TokenAction = {type: string; tokenValue: string};
 export type ErrorAction = {type: string; error: ErrorResponse};
 export type UserAction = {type: string; user: UserDetailsModel};
 
-export interface SetActivePlaylistAction extends Action<"SET_SELECTED_PLAYLIST"> {playlistId: string};
+export interface SetActivePlaylistAction extends Action<"SET_SELECTED_PLAYLIST"> {playlist: PlaylistModel};
 export interface RetrieveAllPlaylistsAction extends Action<"FETCH_ALL_PLAYLIST"> {playlists: PlaylistModel[]};
 export interface CreatePlaylistAction extends Action<"CREATE_PLAYLIST"> {playlist: PlaylistModel};
-export interface AddTracksAction extends Action<"ADD_TRACKS"> {tracks: TrackModel[], playlistId: string};
-export type PlaylistAction = RetrieveAllPlaylistsAction | CreatePlaylistAction | SetActivePlaylistAction | AddTracksAction;
+export interface AddTracksToPlaylistAction extends Action<"ADD_TRACKS_IN_PLAYLIST"> {tracks: TrackModel[], playlist: PlaylistModel};
+export interface RemoveTrackFromPlaylistAction extends Action<"REMOVE_TRACKS_FROM_PLAYLIST"> {track: TrackModel, playlist: PlaylistModel};
+export type PlaylistAction = RetrieveAllPlaylistsAction | CreatePlaylistAction | SetActivePlaylistAction | AddTracksToPlaylistAction | RemoveTrackFromPlaylistAction;
 
-export interface RetrieveTrackListAction extends Action<"FETCH_ALL_TRACKS"> {tracks: TrackModel[]};
-export type TrackAction = RetrieveTrackListAction;
+export interface SetTracksAction extends Action<"FETCH_ALL_TRACKS"> {tracks: TrackModel[]};
+export interface AddTrackAction extends Action<"ADD_TRACK"> {track: TrackModel};
+export interface RemoveTrackAction extends Action<"REMOVE_TRACK"> {track: TrackModel};
+export type TrackAction = SetTracksAction | AddTrackAction | RemoveTrackAction;

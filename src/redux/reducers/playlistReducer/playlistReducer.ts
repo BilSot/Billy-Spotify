@@ -1,13 +1,19 @@
 import {Reducer} from "redux";
 import {
+    AddTracksToPlaylistAction, defaultPlaylist,
     PlaylistAction, PlaylistModel,
-    Playlists
+    Playlists, RemoveTrackFromPlaylistAction
 } from "../../../types/models";
-import {ADD_TRACKS, CREATE_PLAYLIST, FETCH_ALL_PLAYLIST, SET_SELECTED_PLAYLIST} from "./playlistActions";
+import {
+    ADD_TRACKS_IN_PLAYLIST,
+    CREATE_PLAYLIST,
+    FETCH_ALL_PLAYLIST, REMOVE_TRACKS_FROM_PLAYLIST,
+    SET_SELECTED_PLAYLIST
+} from "./playlistActions";
 
 const initialState: Playlists = {
     playlists: [],
-    activePlaylist: ""
+    activePlaylist: {playlistId: "", playlist: defaultPlaylist}
 }
 
 export const playlistReducer: Reducer<Playlists, PlaylistAction> = function (state = initialState, action): Playlists {
@@ -24,28 +30,58 @@ export const playlistReducer: Reducer<Playlists, PlaylistAction> = function (sta
                 playlists: state.playlists.concat(action.playlist)
             }
         }
-        case ADD_TRACKS: {
-            let playlistToBeUpdatedIndex: number = state.playlists.findIndex((p) => p.id === action.playlistId);
-            let playlistToBeUpdated: PlaylistModel | undefined = state.playlists.find((p) => p.id === action.playlistId);
-            if (playlistToBeUpdatedIndex > -1 && playlistToBeUpdated) {
-                playlistToBeUpdated.tracks = action.tracks;
-                state.playlists.splice(playlistToBeUpdatedIndex, 1, playlistToBeUpdated);
-                return {
-                    ...state,
-                }
-            }else{
-                return {
-                    ...state
-                }
+        case ADD_TRACKS_IN_PLAYLIST: {
+            let allPlaylists = Array.from(state.playlists);
+            return {
+                ...state,
+                playlists: addTracks(allPlaylists, action)
             }
         }
         case SET_SELECTED_PLAYLIST: {
             return {
                 ...state,
-                activePlaylist: action.playlistId
+                activePlaylist: {
+                    playlist: action.playlist,
+                    playlistId: action.playlist.id
+                },
+
+            }
+        }
+        case REMOVE_TRACKS_FROM_PLAYLIST: {
+            let allPlaylists = Array.from(state.playlists);
+            return {
+                ...state,
+                playlists: removeTrack(allPlaylists, action)
             }
         }
     }
 
     return state;
+}
+
+function getPlaylistInfo(allPlaylists: PlaylistModel[], id: string): number {
+    return allPlaylists.findIndex((p) => p.id === id);
+}
+
+function addTracks(allPlaylists: PlaylistModel[], action: AddTracksToPlaylistAction): PlaylistModel[] {
+
+    let playlistToBeUpdatedIndex = getPlaylistInfo(allPlaylists, action.playlist.id);
+    if (playlistToBeUpdatedIndex > -1) {
+        let playlistToBeUpdated = action.playlist;
+        playlistToBeUpdated.tracks = action.tracks;
+        allPlaylists.splice(playlistToBeUpdatedIndex, 1, playlistToBeUpdated);
+    }
+    return allPlaylists;
+}
+
+function removeTrack(allPlaylists: PlaylistModel[], action: RemoveTrackFromPlaylistAction): PlaylistModel[] {
+    let playlistToBeUpdatedIndex = getPlaylistInfo(allPlaylists, action.playlist.id);
+    if (playlistToBeUpdatedIndex > -1) {
+        let playlistToBeUpdated = action.playlist;
+        playlistToBeUpdated.tracks = playlistToBeUpdated.tracks.filter((track) => {
+            return track.id !== action.track.id;
+        });
+        allPlaylists.splice(playlistToBeUpdatedIndex, 1, playlistToBeUpdated);
+    }
+    return allPlaylists;
 }

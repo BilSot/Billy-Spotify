@@ -47,7 +47,13 @@ const AddPlaylist: React.FC<AddPlaylistProps> = ({createNewPlaylist}) => {
     };
 
     const handleShow = () => setShow(true);
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+        setPlaylist({name: "", description: ""});
+        for (let error in errors){
+            setErrors({});
+        }
+    }
     return (
         <>
             <Button onClick={handleShow}>Add playlist</Button>

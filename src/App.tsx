@@ -1,6 +1,6 @@
 import './App.css';
 import {getAuthURL, SpotifyToken} from "./authorization";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {
     HashParam,
     BillySpotifyStateModel,
@@ -20,6 +20,8 @@ import {
     setTracksInPlaylist
 } from "./redux/reducers/playlistReducer/playlistActions";
 import {setTracks} from "./redux/reducers/trackReducer/trackActions";
+import {Button} from "react-bootstrap";
+import {setTheme} from "./redux/reducers/themeReducer/themeActions";
 
 const App: React.FC<PropsFromRedux> = (props) => {
 
@@ -145,7 +147,10 @@ const App: React.FC<PropsFromRedux> = (props) => {
                     });
                 }
                 props.setTracks(tracksInPlaylist);
-                props.setTracksInPlaylist(tracksInPlaylist, playlistId);
+                let playlist = props.playlists.find((p) => p.id === playlistId);
+                if(playlist) {
+                    props.setTracksInPlaylist(tracksInPlaylist, playlist);
+                }
             })
             .catch((error) => {
 
@@ -170,6 +175,7 @@ const App: React.FC<PropsFromRedux> = (props) => {
 
 const mapStateToProps = (state: BillySpotifyStateModel) => {
     return {
+        theme: state.themeState.theme,
         token: state.tokenState.token,
         user: state.user,
         playlists: state.playlistsData.playlists,
