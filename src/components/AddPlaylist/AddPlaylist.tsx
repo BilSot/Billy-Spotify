@@ -1,6 +1,7 @@
 import React, {FormEvent, FormEventHandler, useState} from "react";
 import {Button, Modal, Form} from "react-bootstrap";
-import {DraftPlaylist} from "../types/models";
+import {DraftPlaylist} from "../../types/models";
+import "./AddPlaylist.css";
 
 interface AddPlaylistProps {
     createNewPlaylist: (playlist: DraftPlaylist) => void
@@ -55,11 +56,11 @@ const AddPlaylist: React.FC<AddPlaylistProps> = ({createNewPlaylist}) => {
         }
     }
     return (
-        <>
-            <Button onClick={handleShow}>Add playlist</Button>
+        <div className="add-playlist col-3">
+            <Button onClick={handleShow} className="add-playlist-btn">Create new playlist</Button>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Create new playlist</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form noValidate onSubmit={handleSubmit}>
@@ -103,7 +104,7 @@ const AddPlaylist: React.FC<AddPlaylistProps> = ({createNewPlaylist}) => {
                 </Modal.Body>
                 <Modal.Footer></Modal.Footer>
             </Modal>
-        </>
+        </div>
     )
 }
 

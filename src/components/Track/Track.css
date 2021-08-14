@@ -1,0 +1,6 @@
+.remove-track-btn {
+    background-color: transparent;
+    line-height: 1;
+    position: relative;
+    /*top: calc(var(--bs-gutter-x) * 0.5);*/
+}

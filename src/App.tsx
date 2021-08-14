@@ -9,8 +9,7 @@ import {
 import {bindActionCreators} from "redux";
 import {connect, ConnectedProps} from "react-redux";
 import {setToken} from "./redux/reducers/tokenReducer/tokenActions";
-import Header from "./components/Header";
-import MainContent from "./components/MainContent";
+import MainContent from "./components/MainContent/MainContent";
 import {fetchUserError, fetchUserSuccess} from "./redux/reducers/userDetailsReducer/userDetailsActions";
 import axios from "axios";
 import {
@@ -20,8 +19,8 @@ import {
     setTracksInPlaylist
 } from "./redux/reducers/playlistReducer/playlistActions";
 import {setTracks} from "./redux/reducers/trackReducer/trackActions";
-import {Button} from "react-bootstrap";
-import {setTheme} from "./redux/reducers/themeReducer/themeActions";
+import UserDetails from "./components/UserDetails/UserDetails";
+import Search from "./components/Search/Search";
 
 const App: React.FC<PropsFromRedux> = (props) => {
 
@@ -101,6 +100,8 @@ const App: React.FC<PropsFromRedux> = (props) => {
                     });
                 }
                 props.fetchAllPlaylists(playlists);
+                props.setSelectedPlaylist(playlists[0]);
+                fetchTracksFromPlaylist(playlists[0].id);
             })
             .catch((error) => {
                 console.log(error);
@@ -148,7 +149,7 @@ const App: React.FC<PropsFromRedux> = (props) => {
                 }
                 props.setTracks(tracksInPlaylist);
                 let playlist = props.playlists.find((p) => p.id === playlistId);
-                if(playlist) {
+                if (playlist) {
                     props.setTracksInPlaylist(tracksInPlaylist, playlist);
                 }
             })
@@ -164,10 +165,15 @@ const App: React.FC<PropsFromRedux> = (props) => {
                 <p>Start page</p>
             )}
             {props.token && (
-                <div>
-                    <Header loggedInUser={props.user} createNewPlaylist={createNewPlaylist}/>
-                    <MainContent playlists={props.playlists} fetchTracksFromPlaylist={fetchTracksFromPlaylist}/>
-                </div>
+                <>
+                    <div className="left-content row">
+                        <Search/>
+                        <MainContent playlists={props.playlists} createNewPlaylist={createNewPlaylist} fetchTracksFromPlaylist={fetchTracksFromPlaylist}/>
+                    </div>
+                    <div className="right-content">
+                        <UserDetails loggedInUser={props.user}/>
+                    </div>
+                </>
             )}
         </div>
     )

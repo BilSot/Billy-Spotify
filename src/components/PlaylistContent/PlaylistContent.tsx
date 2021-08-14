@@ -1,20 +1,24 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
-import TrackList from "./TrackList";
-import {BillySpotifyStateModel, PlaylistModel, TrackModel} from "../types/models";
+import TrackList from "../TrackList/TrackList";
+import {BillySpotifyStateModel, DraftPlaylist, PlaylistModel, TrackModel} from "../../types/models";
 import {connect, ConnectedProps} from "react-redux";
 import {bindActionCreators} from "redux";
-import {removeTrack, setTracks} from "../redux/reducers/trackReducer/trackActions";
-import {removeTrackFromPlaylist, setSelectedPlaylist} from "../redux/reducers/playlistReducer/playlistActions";
+import {removeTrack, setTracks} from "../../redux/reducers/trackReducer/trackActions";
+import {removeTrackFromPlaylist, setSelectedPlaylist} from "../../redux/reducers/playlistReducer/playlistActions";
 import axios from "axios";
+import "./PlaylistContent.css";
+import AddPlaylist from "../AddPlaylist/AddPlaylist";
 
 interface PlaylistDropdownProps {
     playlists: PlaylistModel[],
+    createNewPlaylist: (playlist: DraftPlaylist) => void,
     fetchTracksFromPlaylist: (playlistId: string) => void
 }
 
-const PlaylistDropdown: React.FC<PlaylistDropdownPropsFromRedux> = ({
+const PlaylistContent: React.FC<PlaylistDropdownPropsFromRedux> = ({
                                                                         token,
                                                                         playlists,
+                                                                        createNewPlaylist,
                                                                         activePlaylist,
                                                                         fetchTracksFromPlaylist,
                                                                         tracks,
@@ -23,20 +27,6 @@ const PlaylistDropdown: React.FC<PlaylistDropdownPropsFromRedux> = ({
                                                                         removeTrackFromPlaylist,
                                                                         removeTrack
                                                                     }) => {
-    const [loaded, setLoaded] = useState(false);
-
-    useEffect(() => {
-        if (playlists.length > 0) {
-            setSelectedPlaylist(playlists[0]);
-            fetchTracksFromPlaylist(playlists[0].id);
-        }
-    }, [loaded]);
-
-    useEffect(() => {
-        setTimeout(() => {
-            setLoaded(true);
-        }, 500);
-    }, []);
 
     const handleOnSelect = (event: ChangeEvent<HTMLSelectElement>) => {
 
@@ -63,7 +53,7 @@ const PlaylistDropdown: React.FC<PlaylistDropdownPropsFromRedux> = ({
             }
         })
             .then((response) => {
-                if(response.status === 200){
+                if (response.status === 200) {
                     removeTrackFromPlaylist(track, activePlaylist.playlist);
                     removeTrack(track);
                 }
@@ -73,11 +63,14 @@ const PlaylistDropdown: React.FC<PlaylistDropdownPropsFromRedux> = ({
 
     return (
         <div>
-            <select onChange={handleOnSelect}>
-                {playlists.map((playlist) => {
-                    return <option key={playlist.id} value={playlist.id}>{playlist.name}</option>
-                })}
-            </select>
+            <div className="playlist-dropdown">
+                <select id="selectElem" onChange={handleOnSelect}>
+                    {playlists.map((playlist) => {
+                        return <option key={playlist.id} value={playlist.id}>{playlist.name}</option>
+                    })}
+                </select>
+                <AddPlaylist createNewPlaylist={createNewPlaylist}/>
+            </div>
             <TrackList tracks={tracks} removeTrack={removeTrackFromTrackList}/>
         </div>
     )
@@ -103,4 +96,4 @@ const mapDispatchToProps = (dispatch: any) => {
 
 export type PlaylistDropdownPropsFromRedux = ConnectedProps<typeof connector>;
 const connector = connect(mapStateToProps, mapDispatchToProps);
-export default connector(PlaylistDropdown);
+export default connector(PlaylistContent);

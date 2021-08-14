@@ -15,9 +15,16 @@
   background-color: red;
 }
 .App {
-  text-align: center;
+  display: flex;
+  flex-direction: row;
+  max-width: 1400px;
+  margin: 20px auto 0;
 }
 
-.App-link {
-  color: #61dafb;
+.App .left-content{
+  flex-basis: 80%;
+}
+
+.App .right-content{
+  flex-basis: 20%;
 }

@@ -1,0 +1,20 @@
+.user-details-container > .user-details-container-info {
+    height: 100%;
+    float: right;
+}
+
+.user-details-container-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-details-container-info .user-details-container-info-img {
+    border-radius: 50%;
+    height: inherit;
+    margin-bottom: 5%;
+    width: 75px;
+}
+
+.user-details-container-info .user-details-container-info-name {
+    text-align: center;
+}

@@ -1,0 +1,23 @@
+.search-container {
+    position: relative;
+    height: 40px;
+}
+
+.search-container-overlay {
+    height: 100%;
+    width: 100%;
+}
+
+.search-input{
+    height: inherit;
+    width: 100%;
+}
+
+
+.search-input  input {
+    border: none;
+    height: inherit;
+    outline: none;
+    padding: 5px;
+    width: 100%;
+}

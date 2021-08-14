@@ -1,12 +1,13 @@
 import React, {ChangeEvent, useState} from "react";
-import {Timer} from "../types/timer";
+import {Timer} from "../../types/timer";
 import axios from "axios";
-import {BillySpotifyStateModel, PlaylistModel, SearchResult, TrackModel} from "../types/models";
+import {BillySpotifyStateModel, PlaylistModel, SearchResult, TrackModel} from "../../types/models";
 import {connect, ConnectedProps} from "react-redux";
-import SearchResultsList from "./SearchResultsList";
+import SearchResultsList from "../SearchResults/SearchResultsList";
 import {bindActionCreators} from "redux";
-import {setTracksInPlaylist} from "../redux/reducers/playlistReducer/playlistActions";
-import {addTrack, setTracks} from "../redux/reducers/trackReducer/trackActions";
+import {setTracksInPlaylist} from "../../redux/reducers/playlistReducer/playlistActions";
+import {addTrack, setTracks} from "../../redux/reducers/trackReducer/trackActions";
+import "./Search.css";
 
 interface SearchProps {
 
@@ -115,9 +116,14 @@ const Search: React.FC<SearchPropsFromRedux> = ({
     }
 
     return (
-        <div>
-            <input placeholder="Search for tracks..." onChange={handleOnChangeInput}/>
-            <SearchResultsList searchResults={searchResults} addTrackToPlaylist={addTrackToPlaylist}/>
+
+        <div className="search-container col-12">
+            <div className="search-container-overlay">
+                <div className="search-input">
+                    <input placeholder="Search for tracks..." onChange={handleOnChangeInput}/>
+                </div>
+                <SearchResultsList searchResults={searchResults} addTrackToPlaylist={addTrackToPlaylist}/>
+            </div>
         </div>
     )
 }

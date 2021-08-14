@@ -1,0 +1,41 @@
+.search-results-list {
+    background-color: #6a6969;
+    border-top: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 100%;
+}
+
+.list-group {
+    background-color: #393c40;
+    list-style: none;
+    max-height: 75vh;
+    overflow-y: auto;
+    padding-left: 0;
+    position: relative;
+    top: 1px;
+    width: 100%;
+    z-index: 99;
+}
+
+.list-group-item {
+    background-color: #2c3034;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.list-group-item-content {
+    display: flex;
+}
+
+.list-group-item-name {
+    align-self: center;
+    flex-basis: 70%;
+    padding: 5px;
+    text-align: center;
+}
+
+.list-group-item-added {
+    align-self: center;
+    height: 50%;
+}
