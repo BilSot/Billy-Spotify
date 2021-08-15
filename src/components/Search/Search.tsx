@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useState} from "react";
 import {Timer} from "../../types/timer";
 import axios from "axios";
-import {BillySpotifyStateModel, PlaylistModel, SearchResult, TrackModel} from "../../types/models";
+import {BillySpotifyStateModel, SearchResult, TrackModel} from "../../types/models";
 import {connect, ConnectedProps} from "react-redux";
 import SearchResultsList from "../SearchResults/SearchResultsList";
 import {bindActionCreators} from "redux";
@@ -98,7 +98,6 @@ const Search: React.FC<SearchPropsFromRedux> = ({
             }
         })
             .then((response) => {
-                console.log("We have our song! ", response.data);
                 let track: TrackModel = {
                     id: response.data.id,
                     name: response.data.name,

@@ -15,7 +15,9 @@
 
 
 .search-input  input {
-    border: none;
+    background-color: black;
+    border: 0.01rem solid white;
+    color: white;
     height: inherit;
     outline: none;
     padding: 5px;

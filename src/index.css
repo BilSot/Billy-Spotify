@@ -13,11 +13,6 @@ body {
 
 .dark-mode {
   transition: all 0.25s linear;
-  background-color: #6a6969;
+  background-color: rgb(99 84 146);
   color: white;
-}
-.light-mode {
-  transition: all 0.25s linear;
-  background-color: white;
-  color: black;
 }

@@ -3,3 +3,9 @@
     flex-direction: row;
     margin: 10px 0 10px 0;
 }
+
+.select-playlist {
+    background-color: black;
+    border: 0.01rem solid white;
+    color: white;
+}

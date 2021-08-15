@@ -8,12 +8,6 @@
   padding-right: 0!important;
 }
 
-.button-dark{
-  background-color: wheat;
-}
-.button-light{
-  background-color: red;
-}
 .App {
   display: flex;
   flex-direction: row;

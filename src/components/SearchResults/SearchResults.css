@@ -39,3 +39,7 @@
     align-self: center;
     height: 50%;
 }
+
+.add-track-btn {
+    background-color: transparent;
+}

@@ -48,8 +48,8 @@ const Track: React.FC<TrackProps> = ({track, removeTrack}) => {
                     <p>Are you sure you want to remove this track from your playlist?</p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={() => confirmRemoveTrack(track)}>
-                        Yes
+                    <Button className="remove-track-btn remove-confirm" onClick={() => confirmRemoveTrack(track)}>
+                        Remove
                     </Button>
                     <Button variant="secondary" onClick={handleClose}>
                         Cancel

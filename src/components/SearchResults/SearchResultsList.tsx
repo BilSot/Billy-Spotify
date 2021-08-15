@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {SearchResult, TrackModel} from "../../types/models";
+import {SearchResult} from "../../types/models";
 import "./SearchResults.css";
 import {Button, ListGroup} from "react-bootstrap";
 
@@ -17,7 +17,6 @@ const SearchResultsList: React.FC<SearchResultsListProps> = ({searchResults, add
     }
     return (
         <div className="search-results-list">
-            {/*<ul>*/}
             <ListGroup variant="flush" className="list-group">
                 {searchResults.map((track) => {
                     return <ListGroup.Item key={track.id} className="list-group-item">
@@ -31,12 +30,11 @@ const SearchResultsList: React.FC<SearchResultsListProps> = ({searchResults, add
                             <div className="list-group-item-added">
                                 {track.addedInPlaylist && <span>Added</span>}
                                 {!track.addedInPlaylist &&
-                                <Button onClick={() => onTrackAddedClick(track)}>Add track</Button>}</div>
+                                <Button onClick={() => onTrackAddedClick(track)} className="add-track-btn">Add track</Button>}</div>
                         </div>
                     </ListGroup.Item>
                 })}
             </ListGroup>
-            {/*</ul>*/}
         </div>
     )
 }

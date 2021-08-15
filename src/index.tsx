@@ -1,19 +1,19 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import {createStore, Store} from "redux";
 import {Provider} from "react-redux";
 import {rootReducer} from "./redux/rootReducer";
 import {BillySpotifyStateModel} from "./types/models";
+import reportWebVitals from './reportWebVitals';
 
-const spotiflyStore: Store<BillySpotifyStateModel> = createStore(rootReducer);
+const BillySpotifyStore: Store<BillySpotifyStateModel> = createStore(rootReducer);
 
 ReactDOM.render(
     <React.StrictMode>
-        <Provider store={spotiflyStore}>
+        <Provider store={BillySpotifyStore}>
             <App/>
         </Provider>
     </React.StrictMode>,

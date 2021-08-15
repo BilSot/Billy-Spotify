@@ -1,6 +1,6 @@
 import './App.css';
 import {getAuthURL, SpotifyToken} from "./authorization";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {
     HashParam,
     BillySpotifyStateModel,
@@ -14,7 +14,7 @@ import {fetchUserError, fetchUserSuccess} from "./redux/reducers/userDetailsRedu
 import axios from "axios";
 import {
     createPlaylist,
-    fetchAllPlaylists,
+    setPlaylists,
     setSelectedPlaylist,
     setTracksInPlaylist
 } from "./redux/reducers/playlistReducer/playlistActions";
@@ -83,7 +83,7 @@ const App: React.FC<PropsFromRedux> = (props) => {
                 fetchUserPlaylists();
             })
             .catch((error) => {
-                props.fetchUserError();
+                console.error(error);
             })
     }
 
@@ -99,7 +99,7 @@ const App: React.FC<PropsFromRedux> = (props) => {
                         tracks: []
                     });
                 }
-                props.fetchAllPlaylists(playlists);
+                props.setPlaylists(playlists);
                 props.setSelectedPlaylist(playlists[0]);
                 fetchTracksFromPlaylist(playlists[0].id);
             })
@@ -154,7 +154,7 @@ const App: React.FC<PropsFromRedux> = (props) => {
                 }
             })
             .catch((error) => {
-
+                console.error(error);
             })
     }
 
@@ -162,7 +162,7 @@ const App: React.FC<PropsFromRedux> = (props) => {
     return (
         <div className="App">
             {!props.token && (
-                <p>Start page</p>
+                <p>Something went wrong, no valid token provided...</p>
             )}
             {props.token && (
                 <>
@@ -181,7 +181,6 @@ const App: React.FC<PropsFromRedux> = (props) => {
 
 const mapStateToProps = (state: BillySpotifyStateModel) => {
     return {
-        theme: state.themeState.theme,
         token: state.tokenState.token,
         user: state.user,
         playlists: state.playlistsData.playlists,
@@ -195,7 +194,7 @@ const mapDispatchToProps = (dispatch: any) => {
             setToken,
             fetchUserSuccess,
             fetchUserError,
-            fetchAllPlaylists,
+            setPlaylists,
             setTracksInPlaylist,
             setTracks,
             createPlaylist,

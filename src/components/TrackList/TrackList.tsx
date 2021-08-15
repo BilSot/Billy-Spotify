@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import Track from "../Track/Track";
 import {TrackModel} from "../../types/models";
 import "./TrackList.css";

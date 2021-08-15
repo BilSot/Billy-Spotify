@@ -6,13 +6,13 @@ import {
 } from "../../../types/models";
 
 export const SET_SELECTED_PLAYLIST = "SET_SELECTED_PLAYLIST";
-export const FETCH_PLAYLIST_ERROR = "FETCH_PLAYLIST_ERROR";
+export const FETCH_ALL_PLAYLIST_ERROR = "FETCH_PLAYLIST_ERROR";
 export const FETCH_ALL_PLAYLIST = "FETCH_ALL_PLAYLIST";
 export const CREATE_PLAYLIST = "CREATE_PLAYLIST";
 export const ADD_TRACKS_IN_PLAYLIST = "ADD_TRACKS_IN_PLAYLIST";
 export const REMOVE_TRACKS_FROM_PLAYLIST = "REMOVE_TRACKS_FROM_PLAYLIST";
 
-export const fetchAllPlaylists = (playlists: PlaylistModel[]): RetrieveAllPlaylistsAction => {
+export const setPlaylists = (playlists: PlaylistModel[]): RetrieveAllPlaylistsAction => {
     return {
         type: FETCH_ALL_PLAYLIST,
         playlists: playlists

@@ -3,16 +3,11 @@ import {Action} from "redux";
 export type HashParam = {[key: string]: string};
 
 export interface BillySpotifyStateModel {
-    themeState: ThemeModel;
     tokenState: TokenModel;
     errorState: ErrorModel;
     user: UserDetailsModel;
     playlistsData: Playlists;
     trackList: TrackListModel;
-}
-
-export interface ThemeModel {
-    theme: string;
 }
 
 export interface TokenModel {

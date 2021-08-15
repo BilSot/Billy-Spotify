@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, {ChangeEvent} from "react";
 import TrackList from "../TrackList/TrackList";
 import {BillySpotifyStateModel, DraftPlaylist, PlaylistModel, TrackModel} from "../../types/models";
 import {connect, ConnectedProps} from "react-redux";
@@ -64,7 +64,7 @@ const PlaylistContent: React.FC<PlaylistDropdownPropsFromRedux> = ({
     return (
         <div>
             <div className="playlist-dropdown">
-                <select id="selectElem" onChange={handleOnSelect}>
+                <select className="select-playlist" onChange={handleOnSelect}>
                     {playlists.map((playlist) => {
                         return <option key={playlist.id} value={playlist.id}>{playlist.name}</option>
                     })}

@@ -1,6 +1,5 @@
 .add-playlist-btn {
-    background-color: #1db954;
-    border: none;
+    background-color: black;
     border-radius: 20px;
     color: #fff;
     cursor: pointer;
@@ -8,4 +7,12 @@
     margin-left: 20px;
     padding: 10px;
     outline: none;
+}
+
+.form-actions {
+    margin-top: 10px;
+}
+
+#create-playlist {
+    margin-right: 10px;
 }

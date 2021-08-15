@@ -1,6 +1,16 @@
 .remove-track-btn {
     background-color: transparent;
-    line-height: 1;
+    border-color: rgb(158 33 33);
+    /*line-height: 1;*/
     position: relative;
     /*top: calc(var(--bs-gutter-x) * 0.5);*/
+}
+
+.remove-track-btn:hover,
+.remove-track-btn:focus,
+.remove-track-btn:active,
+.remove-confirm{
+    background-color: rgb(158 33 33);
+    border-color: rgb(158 33 33);
+    box-shadow: none;
 }

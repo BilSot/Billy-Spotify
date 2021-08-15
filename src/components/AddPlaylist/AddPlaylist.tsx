@@ -1,4 +1,4 @@
-import React, {FormEvent, FormEventHandler, useState} from "react";
+import React, {FormEvent, useState} from "react";
 import {Button, Modal, Form} from "react-bootstrap";
 import {DraftPlaylist} from "../../types/models";
 import "./AddPlaylist.css";
@@ -6,19 +6,19 @@ import "./AddPlaylist.css";
 interface AddPlaylistProps {
     createNewPlaylist: (playlist: DraftPlaylist) => void
 }
+
 const AddPlaylist: React.FC<AddPlaylistProps> = ({createNewPlaylist}) => {
     const [show, setShow] = useState(false);
     const [playlist, setPlaylist] = useState<DraftPlaylist>({name: "", description: ""});
-    const [validated, setValidated] = useState(false);
-    const [errors, setErrors] = useState<{[key:string]: any}>({});
-    const [form, setForm] = useState<{[key:string]: string}>({});
+    const [errors, setErrors] = useState<{ [key: string]: any }>({});
+    const [form, setForm] = useState<{ [key: string]: string }>({});
 
     const setField = (field: string, value: string) => {
         setForm({
             ...form,
             [field]: value
         });
-        if ( errors[field] ) setErrors({
+        if (errors[field]) setErrors({
             ...errors,
             [field]: null
         })
@@ -28,21 +28,19 @@ const AddPlaylist: React.FC<AddPlaylistProps> = ({createNewPlaylist}) => {
         event.preventDefault();
         const formErrors = findFormErrors();
 
-        if(Object.keys(formErrors).length > 0){
+        if (Object.keys(formErrors).length > 0) {
             setErrors(formErrors);
-        }else{
+        } else {
             createNewPlaylist(playlist);
             setPlaylist({name: "", description: ""});
-            setValidated(true);
             setShow(false);
         }
     };
 
     const findFormErrors = () => {
-        const { name } = form;
-        const newErrors: {[key:string]: string} = {};
-        // name errors
-        if ( !name || name === '' ) newErrors.name = 'Please enter a name'
+        const {name} = form;
+        const newErrors: { [key: string]: string } = {};
+        if (!name || name === '') newErrors.name = 'Please enter a name'
 
         return newErrors;
     };
@@ -51,7 +49,7 @@ const AddPlaylist: React.FC<AddPlaylistProps> = ({createNewPlaylist}) => {
     const handleClose = () => {
         setShow(false);
         setPlaylist({name: "", description: ""});
-        for (let error in errors){
+        for (let error in errors) {
             setErrors({});
         }
     }
@@ -94,12 +92,14 @@ const AddPlaylist: React.FC<AddPlaylistProps> = ({createNewPlaylist}) => {
                                 type="text"
                             />
                         </Form.Group>
-                        <Button variant="primary" type="submit">
-                            Save Changes
-                        </Button>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Close
-                        </Button>
+                        <div className="form-actions">
+                            <Button variant="primary" type="submit" id="create-playlist">
+                                Create playlist
+                            </Button>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Close
+                            </Button>
+                        </div>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer></Modal.Footer>
