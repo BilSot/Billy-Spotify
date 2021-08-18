@@ -110,7 +110,7 @@ const Search: React.FC<SearchPropsFromRedux> = ({
                 return track;
             })
             .catch((error) => {
-                return Promise.resolve(error);
+                return Promise.reject(error);
             })
     }
 
