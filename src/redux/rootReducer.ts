@@ -12,4 +12,4 @@ export const rootReducer = combineReducers<BillySpotifyStateModel>({
     user: userDetailsReducer,
     playlistsData: playlistReducer,
     trackList: trackReducer
-})
+});

@@ -3,13 +3,19 @@ import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import {createStore, Store} from "redux";
+import {applyMiddleware, createStore, Store} from "redux";
+import createSagaMiddleware from "redux-saga";
 import {Provider} from "react-redux";
 import {rootReducer} from "./redux/rootReducer";
+import {rootSaga} from "./sagas/rootSaga";
+import { composeWithDevTools } from 'redux-devtools-extension';
 import {BillySpotifyStateModel} from "./types/models";
 import reportWebVitals from './reportWebVitals';
 
-const BillySpotifyStore: Store<BillySpotifyStateModel> = createStore(rootReducer);
+const sagaMiddleWare = createSagaMiddleware();
+
+const BillySpotifyStore: Store<BillySpotifyStateModel> = createStore(rootReducer,  composeWithDevTools(applyMiddleware(sagaMiddleWare)));
+sagaMiddleWare.run(rootSaga);
 
 ReactDOM.render(
     <React.StrictMode>

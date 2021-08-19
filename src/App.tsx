@@ -4,13 +4,15 @@ import React, {useEffect} from "react";
 import {
     HashParam,
     BillySpotifyStateModel,
-    UserDetailsModel, PlaylistModel, TrackModel, DraftPlaylist
+    PlaylistModel, TrackModel, DraftPlaylist
 } from "./types/models";
 import {bindActionCreators} from "redux";
 import {connect, ConnectedProps} from "react-redux";
 import {setToken} from "./redux/reducers/tokenReducer/tokenActions";
 import MainContent from "./components/MainContent/MainContent";
-import {fetchUserError, fetchUserSuccess} from "./redux/reducers/userDetailsReducer/userDetailsActions";
+import {
+    fetchUserRequest,
+} from "./redux/reducers/userDetailsReducer/userDetailsActions";
 import axios from "axios";
 import {
     createPlaylist,
@@ -69,7 +71,11 @@ const App: React.FC<PropsFromRedux> = (props) => {
     }
 
     function fetchUser(): void {
-        axios.get("https://api.spotify.com/v1/me", {
+        props.fetchUserRequest(props.token);
+        fetchUserPlaylists();
+        /*props.fetchUserSuccess(props.user);
+        fetchUserPlaylists();*/
+        /*axios.get("https://api.spotify.com/v1/me", {
             headers: {'Authorization': 'Bearer ' + props.token}
         })
             .then((data) => {
@@ -84,7 +90,7 @@ const App: React.FC<PropsFromRedux> = (props) => {
             })
             .catch((error) => {
                 console.error(error);
-            })
+            })*/
     }
 
     function fetchUserPlaylists(): void {
@@ -192,8 +198,7 @@ const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators(
         {
             setToken,
-            fetchUserSuccess,
-            fetchUserError,
+            fetchUserRequest,
             setPlaylists,
             setTracksInPlaylist,
             setTracks,

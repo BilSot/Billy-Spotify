@@ -85,10 +85,13 @@ export interface SearchResult {
     addedInPlaylist: boolean;
 }
 
-export type ThemeAction = {type: string; theme: string}
 export type TokenAction = {type: string; tokenValue: string};
 export type ErrorAction = {type: string; error: ErrorResponse};
-export type UserAction = {type: string; user: UserDetailsModel};
+
+export interface RetrieveUser extends Action<"FETCH_USER_REQUEST"> {token: string}
+export interface FetchUserSuccess extends Action<"FETCH_USER_SUCCESS"> {user: UserDetailsModel}
+export interface FetchUserError extends Action<"FETCH_USER_ERROR"> {user: UserDetailsModel}
+export type UserAction = RetrieveUser | FetchUserSuccess | FetchUserError;
 
 export interface SetActivePlaylistAction extends Action<"SET_SELECTED_PLAYLIST"> {playlist: PlaylistModel};
 export interface RetrieveAllPlaylistsAction extends Action<"FETCH_ALL_PLAYLIST"> {playlists: PlaylistModel[]};
