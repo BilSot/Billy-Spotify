@@ -33,22 +33,20 @@ const App: React.FC<PropsFromRedux> = (props) => {
         state: ''
     };
 
-    onLoad();
-
     useEffect(() => {
-        if (props.token !== "") {
-            fetchUser();
-        }
-    }, [props.token]);
-
-    function onLoad() {
         hash = getHashFromURL();
         if (hash.access_token) {
             props.setToken(hash.access_token);
         } else {
             window.location.href = getAuthURL();
         }
-    }
+    }, []);
+
+    useEffect(() => {
+        if (props.token !== "") {
+            fetchUser();
+        }
+    }, [props.token]);
 
     function getHashFromURL(): SpotifyToken {
         let hashParams = window.location.hash
@@ -61,6 +59,7 @@ const App: React.FC<PropsFromRedux> = (props) => {
                 }
                 return initial;
             }, {});
+        window.location.hash = "";
 
         return {
             access_token: hashParams["access_token"],
@@ -123,7 +122,6 @@ const App: React.FC<PropsFromRedux> = (props) => {
             }
         )
             .then((response) => {
-                console.log(response);
                 let newlyCreatedPlaylist: PlaylistModel = {
                     id: response.data.id,
                     name: response.data.name,
