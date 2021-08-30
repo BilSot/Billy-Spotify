@@ -7,7 +7,7 @@ import {
 import {
     ADD_TRACKS_IN_PLAYLIST,
     CREATE_PLAYLIST,
-    FETCH_ALL_PLAYLIST, REMOVE_TRACKS_FROM_PLAYLIST,
+    FETCH_ALL_PLAYLIST_ERROR, FETCH_ALL_PLAYLIST_SUCCESS, REMOVE_TRACKS_FROM_PLAYLIST,
     SET_SELECTED_PLAYLIST
 } from "./playlistActions";
 
@@ -18,10 +18,16 @@ const initialState: Playlists = {
 
 export const playlistReducer: Reducer<Playlists, PlaylistAction> = function (state = initialState, action): Playlists {
     switch (action.type) {
-        case FETCH_ALL_PLAYLIST: {
+        case FETCH_ALL_PLAYLIST_SUCCESS: {
             return {
                 ...state,
                 playlists: action.playlists
+            }
+        }
+        case FETCH_ALL_PLAYLIST_ERROR: {
+            return {
+                ...state,
+                playlists: []
             }
         }
         case CREATE_PLAYLIST: {

@@ -2,20 +2,37 @@ import {
     SetActivePlaylistAction,
     PlaylistModel,
     CreatePlaylistAction,
-    RetrieveAllPlaylistsAction, AddTracksToPlaylistAction, TrackModel, RemoveTrackFromPlaylistAction
+    AddTracksToPlaylistAction,
+    TrackModel,
+    RemoveTrackFromPlaylistAction,
+    PlaylistAction, RetrieveAllPlaylists
 } from "../../../types/models";
 
 export const SET_SELECTED_PLAYLIST = "SET_SELECTED_PLAYLIST";
-export const FETCH_ALL_PLAYLIST_ERROR = "FETCH_PLAYLIST_ERROR";
 export const FETCH_ALL_PLAYLIST = "FETCH_ALL_PLAYLIST";
+export const FETCH_ALL_PLAYLIST_SUCCESS = "FETCH_ALL_PLAYLIST_SUCCESS";
+export const FETCH_ALL_PLAYLIST_ERROR = "FETCH_ALL_PLAYLIST_ERROR";
 export const CREATE_PLAYLIST = "CREATE_PLAYLIST";
 export const ADD_TRACKS_IN_PLAYLIST = "ADD_TRACKS_IN_PLAYLIST";
 export const REMOVE_TRACKS_FROM_PLAYLIST = "REMOVE_TRACKS_FROM_PLAYLIST";
 
-export const setPlaylists = (playlists: PlaylistModel[]): RetrieveAllPlaylistsAction => {
+export const fetchAllPlaylists = (token: string): RetrieveAllPlaylists => {
     return {
         type: FETCH_ALL_PLAYLIST,
+        token: token
+    }
+}
+
+export const fetchAllPlaylistsSuccess = (playlists: PlaylistModel[]): PlaylistAction => {
+    return {
+        type: FETCH_ALL_PLAYLIST_SUCCESS,
         playlists: playlists
+    }
+}
+
+export const fetchAllPlaylistsError = (): PlaylistAction => {
+    return {
+        type: FETCH_ALL_PLAYLIST_ERROR
     }
 }
 
