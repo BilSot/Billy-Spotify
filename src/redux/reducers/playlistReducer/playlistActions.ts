@@ -2,10 +2,13 @@ import {
     SetActivePlaylistAction,
     PlaylistModel,
     CreatePlaylistAction,
-    AddTracksToPlaylistAction,
+    AddTracksToPlaylist,
     TrackModel,
-    RemoveTrackFromPlaylistAction,
-    PlaylistAction, RetrieveAllPlaylists
+    PlaylistAction,
+    RetrieveAllPlaylists,
+    RemoveTracksFromPlaylist,
+    RemoveTracksFromPlaylistSuccess,
+    RemoveTracksFromPlaylistError, ActivePlaylist
 } from "../../../types/models";
 
 export const SET_SELECTED_PLAYLIST = "SET_SELECTED_PLAYLIST";
@@ -15,6 +18,8 @@ export const FETCH_ALL_PLAYLIST_ERROR = "FETCH_ALL_PLAYLIST_ERROR";
 export const CREATE_PLAYLIST = "CREATE_PLAYLIST";
 export const ADD_TRACKS_IN_PLAYLIST = "ADD_TRACKS_IN_PLAYLIST";
 export const REMOVE_TRACKS_FROM_PLAYLIST = "REMOVE_TRACKS_FROM_PLAYLIST";
+export const REMOVE_TRACKS_FROM_PLAYLIST_SUCCESS = "REMOVE_TRACKS_FROM_PLAYLIST_SUCCESS";
+export const REMOVE_TRACKS_FROM_PLAYLIST_ERROR = "REMOVE_TRACKS_FROM_PLAYLIST_ERROR";
 
 export const fetchAllPlaylists = (token: string): RetrieveAllPlaylists => {
     return {
@@ -50,7 +55,7 @@ export const createPlaylist = (playlist: PlaylistModel): CreatePlaylistAction =>
     }
 }
 
-export const setTracksInPlaylist = (tracks: TrackModel[], playlist: PlaylistModel): AddTracksToPlaylistAction => {
+export const addTracksInPlaylist = (tracks: TrackModel[], playlist: PlaylistModel): AddTracksToPlaylist => {
     return {
         type: ADD_TRACKS_IN_PLAYLIST,
         tracks: tracks,
@@ -58,10 +63,25 @@ export const setTracksInPlaylist = (tracks: TrackModel[], playlist: PlaylistMode
     }
 }
 
-export const removeTrackFromPlaylist = (track: TrackModel, playlist: PlaylistModel): RemoveTrackFromPlaylistAction => {
+export const removeTrackFromPlaylist = (token: string, track: TrackModel, playlist: ActivePlaylist): RemoveTracksFromPlaylist => {
     return {
         type: REMOVE_TRACKS_FROM_PLAYLIST,
+        token: token,
         track: track,
         playlist: playlist
+    }
+}
+
+export const removeTrackSuccess = (track: TrackModel, playlist: PlaylistModel): RemoveTracksFromPlaylistSuccess => {
+    return {
+        type: REMOVE_TRACKS_FROM_PLAYLIST_SUCCESS,
+        track: track,
+        playlist: playlist
+    }
+}
+
+export const removeTrackError = (): RemoveTracksFromPlaylistError => {
+    return {
+        type: REMOVE_TRACKS_FROM_PLAYLIST_ERROR
     }
 }

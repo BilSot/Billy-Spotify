@@ -98,9 +98,19 @@ export interface FetchPlaylistsSuccess extends Action<"FETCH_ALL_PLAYLIST_SUCCES
 export interface FetchPlaylistsError extends Action<"FETCH_ALL_PLAYLIST_ERROR"> {}
 export interface SetActivePlaylistAction extends Action<"SET_SELECTED_PLAYLIST"> {playlist: PlaylistModel}
 export interface CreatePlaylistAction extends Action<"CREATE_PLAYLIST"> {playlist: PlaylistModel}
-export interface AddTracksToPlaylistAction extends Action<"ADD_TRACKS_IN_PLAYLIST"> {tracks: TrackModel[], playlist: PlaylistModel}
-export interface RemoveTrackFromPlaylistAction extends Action<"REMOVE_TRACKS_FROM_PLAYLIST"> {track: TrackModel, playlist: PlaylistModel}
-export type PlaylistAction = RetrieveAllPlaylists | FetchPlaylistsSuccess | FetchPlaylistsError | CreatePlaylistAction | SetActivePlaylistAction | AddTracksToPlaylistAction | RemoveTrackFromPlaylistAction;
+export interface AddTracksToPlaylist extends Action<"ADD_TRACKS_IN_PLAYLIST"> {tracks: TrackModel[], playlist: PlaylistModel}
+export interface RemoveTracksFromPlaylist extends Action<"REMOVE_TRACKS_FROM_PLAYLIST"> {token: string, track: TrackModel, playlist: ActivePlaylist}
+export interface RemoveTracksFromPlaylistSuccess extends Action<"REMOVE_TRACKS_FROM_PLAYLIST_SUCCESS"> {track: TrackModel, playlist: PlaylistModel}
+export interface RemoveTracksFromPlaylistError extends Action<"REMOVE_TRACKS_FROM_PLAYLIST_ERROR"> {}
+export type PlaylistAction = RetrieveAllPlaylists |
+    FetchPlaylistsSuccess |
+    FetchPlaylistsError |
+    CreatePlaylistAction |
+    SetActivePlaylistAction |
+    AddTracksToPlaylist |
+    RemoveTracksFromPlaylist |
+    RemoveTracksFromPlaylistSuccess |
+    RemoveTracksFromPlaylistError;
 
 export interface SetTracks extends Action<"SET_TRACKS"> {tracks: TrackModel[]}
 export interface RetrieveTracks extends Action<"FETCH_ALL_TRACKS"> {token: string, playlistId: string}

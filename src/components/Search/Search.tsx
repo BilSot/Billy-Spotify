@@ -5,7 +5,7 @@ import {BillySpotifyStateModel, SearchResult, TrackModel} from "../../types/mode
 import {connect, ConnectedProps} from "react-redux";
 import SearchResultsList from "../SearchResults/SearchResultsList";
 import {bindActionCreators} from "redux";
-import {setTracksInPlaylist} from "../../redux/reducers/playlistReducer/playlistActions";
+import {addTracksInPlaylist} from "../../redux/reducers/playlistReducer/playlistActions";
 import {addTrack, setTracks} from "../../redux/reducers/trackReducer/trackActions";
 import "./Search.css";
 
@@ -138,7 +138,7 @@ const mapStateToProps = (state: BillySpotifyStateModel, ownProps: SearchProps) =
 
 const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
-        setTracksInPlaylist,
+        setTracksInPlaylist: addTracksInPlaylist,
         setTracks,
         addTrack
     }, dispatch)

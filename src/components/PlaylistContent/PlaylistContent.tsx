@@ -3,9 +3,8 @@ import TrackList from "../TrackList/TrackList";
 import {BillySpotifyStateModel, DraftPlaylist, PlaylistModel, TrackModel} from "../../types/models";
 import {connect, ConnectedProps} from "react-redux";
 import {bindActionCreators} from "redux";
-import {removeTrack, setTracks} from "../../redux/reducers/trackReducer/trackActions";
+import {setTracks} from "../../redux/reducers/trackReducer/trackActions";
 import {removeTrackFromPlaylist, setSelectedPlaylist} from "../../redux/reducers/playlistReducer/playlistActions";
-import axios from "axios";
 import "./PlaylistContent.css";
 import AddPlaylist from "../AddPlaylist/AddPlaylist";
 
@@ -24,8 +23,7 @@ const PlaylistContent: React.FC<PlaylistDropdownPropsFromRedux> = ({
                                                                         tracks,
                                                                         setTracks,
                                                                         setSelectedPlaylist,
-                                                                        removeTrackFromPlaylist,
-                                                                        removeTrack
+                                                                        removeTrackFromPlaylist
                                                                     }) => {
 
     const handleOnSelect = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -42,23 +40,7 @@ const PlaylistContent: React.FC<PlaylistDropdownPropsFromRedux> = ({
     }
 
     const removeTrackFromTrackList = (track: TrackModel): void => {
-
-        axios.delete(`https://api.spotify.com/v1/playlists/${activePlaylist.playlistId}/tracks`, {
-            headers: {
-                'Authorization': 'Bearer ' + token,
-                'Content-Type': 'application/json'
-            },
-            data: {
-                "tracks": [{"uri": track.uri}]
-            }
-        })
-            .then((response) => {
-                if (response.status === 200) {
-                    removeTrackFromPlaylist(track, activePlaylist.playlist);
-                    removeTrack(track);
-                }
-            })
-            .catch((error) => console.error(error));
+        removeTrackFromPlaylist(token, track, activePlaylist);
     }
 
     return (
@@ -89,8 +71,7 @@ const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
         setTracks,
         setSelectedPlaylist,
-        removeTrackFromPlaylist,
-        removeTrack
+        removeTrackFromPlaylist
     }, dispatch)
 };
 

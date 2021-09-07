@@ -11,7 +11,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({loggedInUser}) => {
         <div className="user-details-container">
             {loggedInUser.loaded && (
                 <div className="user-details-container-info">
-                    <img className="user-details-container-info-img" src={loggedInUser.image} alt="spotify-user-photo"/>
+                    <img className="user-details-container-info-img" src={loggedInUser.image} alt="spotify-user"/>
                     <span className="user-details-container-info-name">{loggedInUser.display_name}</span>
                 </div>
             )}

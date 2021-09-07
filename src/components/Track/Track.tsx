@@ -27,7 +27,7 @@ const Track: React.FC<TrackProps> = ({track, removeTrack}) => {
         <>
             <tr>
                 <td></td>
-                <td><img src={track.image}/></td>
+                <td><img src={track.image} alt="track"/></td>
                 <td>{track.name}</td>
                 <td>{track.artists.map((artist) => {
                     return <p key={artist.id}>{artist.name}</p>

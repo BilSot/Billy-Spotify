@@ -1,17 +1,30 @@
-import {call, takeLatest, put} from "redux-saga/effects";
+import {call, takeLatest, put, all} from "redux-saga/effects";
 import axios from "axios";
-import {PlaylistModel, RetrieveAllPlaylists, TrackModel, UserDetailsModel} from "../types/models";
 import {
-    FETCH_ALL_PLAYLIST, fetchAllPlaylistsSuccess, fetchAllPlaylistsError, setSelectedPlaylist, setTracksInPlaylist
+    PlaylistModel, RemoveTracksFromPlaylist,
+    RetrieveAllPlaylists,
+    TrackModel,
+    UserDetailsModel
+} from "../types/models";
+import {
+    FETCH_ALL_PLAYLIST,
+    fetchAllPlaylistsSuccess,
+    fetchAllPlaylistsError,
+    setSelectedPlaylist,
+    addTracksInPlaylist,
+    REMOVE_TRACKS_FROM_PLAYLIST, removeTrackSuccess, removeTrackError
 } from "../redux/reducers/playlistReducer/playlistActions";
 import {fetchTracksFromPlaylist} from "./trackSaga";
-import {setTracks} from "../redux/reducers/trackReducer/trackActions";
+import {removeTrack, setTracks} from "../redux/reducers/trackReducer/trackActions";
 
 export function* playlistWatcherSaga() {
-    yield takeLatest(FETCH_ALL_PLAYLIST, workerSaga);
+    yield all([
+        takeLatest(FETCH_ALL_PLAYLIST, getPlaylists),
+        takeLatest(REMOVE_TRACKS_FROM_PLAYLIST, deleteTracksFromPlaylist)
+    ]);
 }
 
-function* workerSaga(action: RetrieveAllPlaylists): Generator<any, void, any> {
+function* getPlaylists(action: RetrieveAllPlaylists): Generator<any, void, any> {
     try{
         const response = yield call(() => fetchPlaylists(action.token));
         let playlists: PlaylistModel[] = [];
@@ -44,11 +57,24 @@ function* getTracksFromPlaylist(token: string, playlist: PlaylistModel): Generat
                 duration: response.data.items[item].track.duration_ms
             });
         }
-        yield put(setTracksInPlaylist(tracksInPlaylist, playlist));
+        yield put(addTracksInPlaylist(tracksInPlaylist, playlist));
         yield put(setTracks(tracksInPlaylist));
     }
     catch (error) {
-        yield put(setTracksInPlaylist([], playlist));
+        yield put(addTracksInPlaylist([], playlist));
+    }
+}
+
+function* deleteTracksFromPlaylist(action: RemoveTracksFromPlaylist): Generator<any, void, any> {
+    try{
+        const response = yield call(() => deleteTracks(action.token, action.track, action.playlist.playlist));
+        if (response.status === 200) {
+            yield put(removeTrackSuccess(action.track, action.playlist.playlist));
+            yield put(removeTrack(action.track));
+        }
+    }
+    catch(error){
+        yield put(removeTrackError());
     }
 }
 
@@ -58,8 +84,14 @@ function fetchPlaylists(token: string): Promise<UserDetailsModel> {
     })
 }
 
-/*function fetchTracksFromPlaylist(token: string, playlistId: string): Promise<TrackModel[]> {
-    return axios.get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-        headers: {'Authorization': 'Bearer ' + token}
+function deleteTracks(token: string, track: TrackModel, activePlaylist: PlaylistModel) {
+    return axios.delete(`https://api.spotify.com/v1/playlists/${activePlaylist.id}/tracks`, {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        data: {
+            "tracks": [{"uri": track.uri}]
+        }
     })
-}*/
+}

@@ -1,13 +1,16 @@
 import {Reducer} from "redux";
 import {
-    AddTracksToPlaylistAction, defaultPlaylist,
+    AddTracksToPlaylist, defaultPlaylist,
     PlaylistAction, PlaylistModel,
-    Playlists, RemoveTrackFromPlaylistAction
+    Playlists, RemoveTracksFromPlaylistSuccess
 } from "../../../types/models";
 import {
     ADD_TRACKS_IN_PLAYLIST,
     CREATE_PLAYLIST,
-    FETCH_ALL_PLAYLIST_ERROR, FETCH_ALL_PLAYLIST_SUCCESS, REMOVE_TRACKS_FROM_PLAYLIST,
+    FETCH_ALL_PLAYLIST_ERROR,
+    FETCH_ALL_PLAYLIST_SUCCESS,
+    REMOVE_TRACKS_FROM_PLAYLIST_SUCCESS,
+    REMOVE_TRACKS_FROM_PLAYLIST_ERROR,
     SET_SELECTED_PLAYLIST
 } from "./playlistActions";
 
@@ -53,11 +56,16 @@ export const playlistReducer: Reducer<Playlists, PlaylistAction> = function (sta
 
             }
         }
-        case REMOVE_TRACKS_FROM_PLAYLIST: {
+        case REMOVE_TRACKS_FROM_PLAYLIST_SUCCESS: {
             let allPlaylists = Array.from(state.playlists);
             return {
                 ...state,
                 playlists: removeTrack(allPlaylists, action)
+            }
+        }
+        case REMOVE_TRACKS_FROM_PLAYLIST_ERROR: {
+            return {
+                ...state
             }
         }
     }
@@ -69,7 +77,7 @@ function getPlaylistInfo(allPlaylists: PlaylistModel[], id: string): number {
     return allPlaylists.findIndex((p) => p.id === id);
 }
 
-function addTracks(allPlaylists: PlaylistModel[], action: AddTracksToPlaylistAction): PlaylistModel[] {
+function addTracks(allPlaylists: PlaylistModel[], action: AddTracksToPlaylist): PlaylistModel[] {
 
     let playlistToBeUpdatedIndex = getPlaylistInfo(allPlaylists, action.playlist.id);
     if (playlistToBeUpdatedIndex > -1) {
@@ -80,7 +88,7 @@ function addTracks(allPlaylists: PlaylistModel[], action: AddTracksToPlaylistAct
     return allPlaylists;
 }
 
-function removeTrack(allPlaylists: PlaylistModel[], action: RemoveTrackFromPlaylistAction): PlaylistModel[] {
+function removeTrack(allPlaylists: PlaylistModel[], action: RemoveTracksFromPlaylistSuccess): PlaylistModel[] {
     let playlistToBeUpdatedIndex = getPlaylistInfo(allPlaylists, action.playlist.id);
     if (playlistToBeUpdatedIndex > -1) {
         let playlistToBeUpdated = action.playlist;

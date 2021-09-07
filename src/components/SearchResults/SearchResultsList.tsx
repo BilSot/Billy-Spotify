@@ -22,7 +22,7 @@ const SearchResultsList: React.FC<SearchResultsListProps> = ({searchResults, add
                     return <ListGroup.Item key={track.id} className="list-group-item">
                         <div className="list-group-item-content">
                             <div className="list-group-item-img">
-                                <img src={track.image} alt="track's image"/>
+                                <img src={track.image} alt="track"/>
                             </div>
                             <div className="list-group-item-name">
                                 <span>{track.name}</span>

@@ -17,10 +17,9 @@ import axios from "axios";
 import {
     createPlaylist,
     fetchAllPlaylists,
-    setSelectedPlaylist,
-    setTracksInPlaylist
+    setSelectedPlaylist
 } from "./redux/reducers/playlistReducer/playlistActions";
-import {fetchTracks, setTracks} from "./redux/reducers/trackReducer/trackActions";
+import {fetchTracks} from "./redux/reducers/trackReducer/trackActions";
 import UserDetails from "./components/UserDetails/UserDetails";
 import Search from "./components/Search/Search";
 
@@ -135,8 +134,6 @@ const mapDispatchToProps = (dispatch: any) => {
             setToken,
             fetchUserRequest,
             fetchAllPlaylists,
-            setTracksInPlaylist,
-            setTracks,
             fetchTracks,
             createPlaylist,
             setSelectedPlaylist

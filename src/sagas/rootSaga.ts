@@ -1,6 +1,6 @@
 import {all} from "redux-saga/effects";
 import {userWatcherSaga} from "./userDetailsSaga";
-import {playlistWatcherSaga} from "./allPlaylistsSaga";
+import {playlistWatcherSaga} from "./playlistsSaga";
 import {trackWatcherSaga} from "./trackSaga";
 
 export function* rootSaga() {
